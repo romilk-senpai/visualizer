@@ -6,21 +6,20 @@ void Visualizer::init()
 
 void Visualizer::createWindow()
 {
-    this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "roguelike");
-    this->videoMode.width = drawer->windowSize().x;
-    this->videoMode.height = drawer->windowSize().y;
+    this->window = new sf::RenderWindow(sf::VideoMode(drawer->windowSize().x, drawer->windowSize().y), "Visualizer");
     this->window->setFramerateLimit(24);
 }
 
-Visualizer::Visualizer(IDrawer* drawer)
+Visualizer::Visualizer(IDrawer *drawer)
+    : drawer(drawer)
 {
-    this->drawer = drawer;
     this->init();
     this->createWindow();
 }
 
 Visualizer::~Visualizer()
 {
+    delete this->drawer;
     delete this->window;
 }
 

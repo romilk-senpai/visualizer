@@ -1,8 +1,13 @@
 #include "visualizer/Visualizer.h"
+#include "algorithms/bspTrees/BSPDrawer.h"
 
 int main()
 {
-    Visualizer visualizer;
+    srand(time(NULL));
+
+    IDrawer *drawer = new BSPDrawer(4);
+
+    Visualizer visualizer(drawer);
 
     while (visualizer.running())
     {

@@ -16,7 +16,10 @@ FetchContent_MakeAvailable(SFML)
 add_executable(main
     src/main.cpp
     src/visualizer/Visualizer.cpp
-    src/common/vector2Int/Vector2Int.cpp)
+    src/common/vector2/Vector2.cpp
+    src/common/container/Container.cpp
+    src/common/tree/Tree.cpp
+    src/algorithms/bspTrees/BSPDrawer.cpp)
 
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
