@@ -5,9 +5,11 @@ int main()
 {
     srand(time(NULL));
 
-    IDrawer *drawer = new BSPDrawer(4);
+    BSPDrawer *drawer = new BSPDrawer();
 
     Visualizer visualizer(drawer);
+
+    drawer->createTree(1);
 
     while (visualizer.running())
     {

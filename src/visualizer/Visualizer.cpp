@@ -38,6 +38,9 @@ void Visualizer::pollEvents()
             this->window->close();
             break;
         case sf::Event::KeyPressed:
+            if (event.key.code == sf::Keyboard::Enter)
+                this->drawer->next();
+
             if (event.key.code == sf::Keyboard::Escape)
                 this->window->close();
         default:
