@@ -1,11 +1,5 @@
 #include "BSPDrawer.h"
 
-int random(int min, int max)
-{
-    int r = floor(((double)rand() / RAND_MAX) * (max - min + 1) + min);
-    return r;
-}
-
 Vector2<Container> BSPDrawer::randomSplit(Container c)
 {
     Container c1, c2;
@@ -66,6 +60,10 @@ Tree *BSPDrawer::splitContainer(Container container, int iterations)
         tree->lChild = splitContainer(containers.x, iterations - 1);
         tree->rChild = splitContainer(containers.y, iterations - 1);
     }
+    else
+    {
+        this->rooms->push_back(Room(container));
+    }
 
     return tree;
 }
@@ -85,8 +83,9 @@ void BSPDrawer::addIteration(Tree *tree)
     }
 }
 
-BSPDrawer::BSPDrawer()
+BSPDrawer::BSPDrawer() 
 {
+    this->rooms = new std::vector<Room>();
 }
 
 BSPDrawer::~BSPDrawer()
@@ -102,6 +101,8 @@ void BSPDrawer::createTree(int iterations)
     }
 
     Container mainContainer = Container(0, 0, CONTAINER_SIZE, CONTAINER_SIZE);
+
+    this->rooms->clear();
     this->containerTree = splitContainer(mainContainer, iterations);
 }
 
@@ -109,6 +110,7 @@ void BSPDrawer::addIteration()
 {
     if (containerTree != nullptr)
     {
+        this->rooms->clear();
         this->addIteration(containerTree);
     }
 }
@@ -120,25 +122,27 @@ void BSPDrawer::next()
 
 Vector2<unsigned int> BSPDrawer::windowSize() const
 {
-    return Vector2<unsigned int>(50 + CONTAINER_SIZE, 50 + CONTAINER_SIZE);
+    return Vector2<unsigned int>(CONTAINER_SIZE, CONTAINER_SIZE);
 }
 
 void BSPDrawer::draw(sf::RenderWindow *window, Tree *tree)
 {
     auto container = tree->leaf;
 
-    sf::RectangleShape shape = sf::RectangleShape(sf::Vector2f(container.w, container.h));
-    shape.setFillColor(sf::Color::Transparent);
-    shape.setOutlineColor(sf::Color::Green);
-    shape.setOutlineThickness(1.0);
-    shape.setPosition(sf::Vector2f(25 + container.x, 25 + container.y));
-    window->draw(shape);
+    sf::RectangleShape boundsShape = sf::RectangleShape(sf::Vector2f(container.w, container.h));
+    boundsShape.setFillColor(sf::Color::Transparent);
+    boundsShape.setOutlineColor(sf::Color::Green);
+    boundsShape.setOutlineThickness(-1);
+    boundsShape.setPosition(sf::Vector2f(container.x, container.y));
+    window->draw(boundsShape);
 
-    if (tree->lChild != nullptr) {
+    if (tree->lChild != nullptr)
+    {
         draw(window, tree->lChild);
     }
 
-    if (tree->rChild != nullptr) {
+    if (tree->rChild != nullptr)
+    {
         draw(window, tree->rChild);
     }
 }
@@ -151,4 +155,12 @@ void BSPDrawer::draw(sf::RenderWindow *window)
     }
 
     this->draw(window, containerTree);
+
+    for (Room room : *(this->rooms))
+    {
+        sf::RectangleShape roomShape = sf::RectangleShape(sf::Vector2f(room.w, room.h));
+        roomShape.setPosition(sf::Vector2f(room.x, room.y));
+        roomShape.setFillColor(sf::Color::Blue);
+        window->draw(roomShape);
+    }
 }

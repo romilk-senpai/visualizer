@@ -16,6 +16,8 @@ FetchContent_MakeAvailable(SFML)
 add_executable(main
     src/main.cpp
     src/visualizer/Visualizer.cpp
+    src/common/random/Random.cpp
+    src/common/room/Room.cpp
     src/common/vector2/Vector2.cpp
     src/common/container/Container.cpp
     src/common/tree/Tree.cpp

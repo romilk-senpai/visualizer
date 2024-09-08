@@ -1,11 +1,12 @@
 #pragma once
 
+#include <iostream>
+#include <math.h>
+#include <vector>
 #include "../../drawer/IDrawer.h"
 #include "../../common/container/Container.h"
 #include "../../common/tree/Tree.h"
-#include <iostream>
-#include "vector"
-#include <math.h>
+#include "../../common/room/Room.h"
 
 typedef TreeNode<Container> Tree;
 
@@ -18,6 +19,8 @@ private:
     const double W_RATIO = 0.45;
 
     Tree *containerTree;
+    std::vector<Room> *rooms;
+
     Vector2<Container> randomSplit(Container c);
     Tree *splitContainer(Container container, int iterations);
     void addIteration(Tree *tree);
