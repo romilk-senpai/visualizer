@@ -154,14 +154,14 @@ void BSPDrawer::draw(sf::RenderWindow *window, Tree *tree)
         if (c2.x > c1.x)
         {
             pathSize.x = c2Center.x - c1Center.x;
-            pathSize.y = 7;
-            c1Center.y -= 3;
+            pathSize.y = 12;
+            c1Center.y -= 6;
         }
         else
         {
-            pathSize.x = 7;
+            pathSize.x = 12;
             pathSize.y = c2Center.y - c1Center.y;
-            c1Center.x -= 3;
+            c1Center.x -= 6;
         }
 
         sf::RectangleShape pathShape = sf::RectangleShape(sf::Vector2f(pathSize.x, pathSize.y));
