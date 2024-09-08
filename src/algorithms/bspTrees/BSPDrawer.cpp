@@ -83,7 +83,7 @@ void BSPDrawer::addIteration(Tree *tree)
     }
 }
 
-BSPDrawer::BSPDrawer() 
+BSPDrawer::BSPDrawer()
 {
     this->rooms = new std::vector<Room>();
 }
@@ -127,23 +127,49 @@ Vector2<unsigned int> BSPDrawer::windowSize() const
 
 void BSPDrawer::draw(sf::RenderWindow *window, Tree *tree)
 {
-    auto container = tree->leaf;
+    if (tree->lChild == nullptr && tree->rChild == nullptr)
+    {
+        auto container = tree->leaf;
 
-    sf::RectangleShape boundsShape = sf::RectangleShape(sf::Vector2f(container.w, container.h));
-    boundsShape.setFillColor(sf::Color::Transparent);
-    boundsShape.setOutlineColor(sf::Color::Green);
-    boundsShape.setOutlineThickness(-1);
-    boundsShape.setPosition(sf::Vector2f(container.x, container.y));
-    window->draw(boundsShape);
-
-    if (tree->lChild != nullptr)
+        sf::RectangleShape boundsShape = sf::RectangleShape(sf::Vector2f(container.w, container.h));
+        boundsShape.setFillColor(sf::Color::Transparent);
+        boundsShape.setOutlineColor(sf::Color::Green);
+        boundsShape.setOutlineThickness(-1);
+        boundsShape.setPosition(sf::Vector2f(container.x, container.y));
+        window->draw(boundsShape);
+    }
+    else
     {
         draw(window, tree->lChild);
-    }
-
-    if (tree->rChild != nullptr)
-    {
         draw(window, tree->rChild);
+
+        sf::Vector2f pathSize;
+        
+        Container c1 = tree->lChild->leaf;
+        Container c2 = tree->rChild->leaf;
+
+        Vector2<double> c1Center = c1.getCenter();
+        Vector2<double> c2Center = c2.getCenter();
+
+        if (c2.x > c1.x)
+        {
+            pathSize.x = c2Center.x - c1Center.x;
+            pathSize.y = 7;
+            c1Center.y -= 3;
+        }
+        else
+        {
+            pathSize.x = 7;
+            pathSize.y = c2Center.y - c1Center.y;
+            c1Center.x -= 3;
+        }
+
+        sf::RectangleShape pathShape = sf::RectangleShape(sf::Vector2f(pathSize.x, pathSize.y));
+        
+        pathShape.setPosition(sf::Vector2f(c1Center.x, c1Center.y));
+        pathShape.setFillColor(sf::Color(128, 128, 128));
+
+        window->draw(pathShape);
     }
 }
 
@@ -160,7 +186,7 @@ void BSPDrawer::draw(sf::RenderWindow *window)
     {
         sf::RectangleShape roomShape = sf::RectangleShape(sf::Vector2f(room.w, room.h));
         roomShape.setPosition(sf::Vector2f(room.x, room.y));
-        roomShape.setFillColor(sf::Color::Blue);
+        roomShape.setFillColor(sf::Color(128, 128, 128));
         window->draw(roomShape);
     }
 }
