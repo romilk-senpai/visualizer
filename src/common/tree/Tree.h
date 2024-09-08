@@ -16,28 +16,26 @@ public:
 
     ~TreeNode()
     {
-        if (lChild != nullptr)
+        if (this->lChild != nullptr)
         {
             delete lChild;
         }
 
-        if (rChild != nullptr)
+        if (this->rChild != nullptr)
         {
             delete rChild;
         }
     }
 
-    void getTree(std::vector<T> *v) 
+    void getTree(std::vector<T> *v)
     {
-        if (lChild != nullptr)
+        if (this->lChild != nullptr && this->rChild)
         {
-            v->push_back(lChild->leaf);
-            lChild->getTree(v);
+            v->push_back(this->leaf);
         }
-
-        if (rChild != nullptr)
+        else
         {
-            v->push_back(rChild->leaf);
+            lChild->getTree(v);
             rChild->getTree(v);
         }
     }
